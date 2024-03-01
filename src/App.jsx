@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState } from "react";
+import { TaskCreator } from "./components/TaskCreator";
 
 const App = () => {
-  return (
-    <div>Iniciando App</div>
-  )
-}
 
-export default App
+  return (
+    <div className="App">
+      <TaskCreator />
+    </div>
+  );
+};
+
+export default App;
