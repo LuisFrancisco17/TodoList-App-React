@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TaskCreator } from "./components/TaskCreator";
+import TaskTable from "./components/TaskTable";
 
 const App = () => {
 
@@ -9,6 +10,12 @@ const App = () => {
     if(!tasksItems.find(task=> task.name ===  val)){
       setTasksItems([...tasksItems, {name: val, done: 'false'}])
     }
+  }
+
+  const toggleTask = task => {
+    setTasksItems(
+      tasksItems.map((t) => (t.name == task.name ? {...t, done: !t.done} : t))
+    );
   }
 
   useEffect(()=> {
@@ -25,22 +32,7 @@ const App = () => {
   return (
     <div className="App">
       <TaskCreator createNewTask={createNewTask}/>
-      <table>
-        <thead>
-          <tr>
-            <th>Tasks</th>
-          </tr>
-        </thead>
-        <tbody>
-            {
-            tasksItems.map( item =>(
-              <tr key={item.name}>
-                <td> {item.name} </td>
-              </tr> ))
-            }
-        </tbody>
-      </table>
-      
+      <TaskTable tasks={tasksItems} toggleTask={toggleTask}/> 
     </div>
   );
 };
