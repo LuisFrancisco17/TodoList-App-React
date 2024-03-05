@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { TaskCreator } from "./components/TaskCreator";
 import TaskTable from "./components/TaskTable";
+import VisibilityControl from "./components/VisibilityControl";
 
 const App = () => {
 
   const [tasksItems, setTasksItems] = useState([]);
-  const [showCompleted, setShowCompleted] = useState(false)
+  const [showCompleted, setShowCompleted] = useState(false);
 
   function createNewTask(val) {
     if(!tasksItems.find(task=> task.name ===  val)){
-      setTasksItems([...tasksItems, {name: val, done: 'false'}])
+      setTasksItems([...tasksItems, {name: val, done: false}])
     }
   }
 
@@ -19,8 +20,13 @@ const App = () => {
     );
   }
 
+  const cleanTask = () => {
+    setTasksItems(tasksItems.filter(task => !task.done));
+    setShowCompleted(false)
+  }
+
   useEffect(()=> {
-    const data = localStorage.getItem('tasks')
+    let data = localStorage.getItem('tasks')
     if (data) {
       setTasksItems(JSON.parse(data))
     }
@@ -35,9 +41,10 @@ const App = () => {
       <TaskCreator createNewTask={createNewTask}/>
       <TaskTable tasks={tasksItems} toggleTask={toggleTask}/> 
 
-      <div>
-        <input type="checkbox" onChange={e => setShowCompleted(!showCompleted) }/> <label>Show Task Done</label>
-      </div>
+      <VisibilityControl 
+      isChecked={showCompleted}
+      setShowCompleted={(checked)=> setShowCompleted(checked)} 
+      cleanTask={cleanTask}/>
 
       {
         showCompleted && (
